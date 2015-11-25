@@ -17,23 +17,39 @@ layout: base
     }
 </style>
 <div id="main">
-    <div class="alert" id="beta">x: <span>?</span></div>
-    <div class="alert" id="gamma">y: <span>?</span></div>
-    <div class="alert" id="alpha">z: <span>?</span></div>
+    <div class="alert alert-danger" id="beta">x: <span>?</span></div>
+    <div class="alert alert-danger" id="gamma">y: <span>?</span></div>
+    <div class="alert alert-danger" id="alpha">z: <span>?</span></div>
 </div>
 <script>
+    var last = {
+        'alpha': 0,
+        'beta': 0,
+        'gamma': 0,
+    };
+    var cur = {
+        'alpha': 0,
+        'beta': 0,
+        'gamma': 0,
+    };
     $(window).on('deviceorientation', function(e) {
         e = e.originalEvent;
-        $.each(['alpha', 'beta', 'gamma'], function(_, id) {
+        $.each(last, function(id, _) {
             var well = $('#' + id);
             if (e[id] !== undefined && e[id] !== null)
                 well.removeClass('alert-danger').addClass('alert-success').find('span').text(e[id]);
             else
                 well.removeClass('alert-success').addClass('alert-danger');
+            cur[id] = e[id];
+        });
+    });
+    setInterval(function() {
+        $.each(last, function(id, _) {
+            last[id] = (last[id] + cur[id]) / 2;
         });
         var rot = 0;
-        if (Math.abs(e.gamma || 0) > 2)
-            rot = -Math.round(e.gamma);
+        if (Math.abs(last.gamma || 0) > 2)
+            rot = -Math.round(last.gamma);
         $('div#main').css('transform', 'rotate(' + rot + 'deg)');
-    });
+    }, 50);
 </script>
