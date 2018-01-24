@@ -1,0 +1,16 @@
+---
+layout: base
+---
+<ul>
+    <li>latitude:</li>
+    <li>longitude:</li>
+    <li>accuracy:</li>
+</ul>
+<script>
+    navigator.geolocation.getCurrentPosition(function(response) {
+        $('li').each(function() {
+            var field = $(this).text().match(/(\w+?):/)[1];
+            $(this).text(field + ': ' + response.coords[field]);
+        });
+    });
+</script>
