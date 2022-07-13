@@ -37,7 +37,7 @@ layout: base
         $.each(last, function(id, _) {
             var well = $('#' + id);
             if (e[id] !== undefined && e[id] !== null)
-                well.removeClass('alert-danger').addClass('alert-success').find('span').text(e[id]);
+                well.removeClass('alert-danger').addClass('alert-success').find('span').text(e[id].toFixed(2).replace(/[\.0]+$/, ''));
             else
                 well.removeClass('alert-success').addClass('alert-danger');
             cur[id] = e[id];
